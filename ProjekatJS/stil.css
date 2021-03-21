@@ -1,0 +1,46 @@
+.Kontejner
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.infoDiv
+{
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100px;
+    flex-grow: 1;
+    border: 1px solid black;
+    padding: 5px;
+    margin: 2px;
+}
+
+.checkDiv
+{
+    display: flex;
+    flex-direction: row;
+}
+.evDiv
+{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 6;
+    margin: 2px;
+}
+
+th, td
+{
+    border: 1px solid black; 
+}
+
+table
+{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.imeDrzave
+{
+    font-size: 24px;
+}
