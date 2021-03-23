@@ -48,7 +48,7 @@ export class Evidencija
         this.crtajEvidencijaFormu(evDiv, tabela);
     }
 
-    crtajFormu(host, tabela)
+    crtajFormu(host)
     {
         let labele = ["Ime", "Prezime", "Broj_dozvole", "JMBG", "Grad", "Kategorija"];
         let elLabel = null;
@@ -87,7 +87,7 @@ export class Evidencija
 
                 everyButton = document.createElement("input");
                 everyButton.type = "checkbox";
-                everyButton.className = "cheks";
+                everyButton.className = "cheks" + this.id;
                 everyButton.value = element;
                 
                 inputEl = document.createElement("label");
@@ -173,7 +173,7 @@ export class Evidencija
             this.vozaci.forEach(el =>{
                 if(jmbg1 === el.jmbg)
                 {
-                    el.kategorijaPush(kateg);//ubaciti zastitu protiv dupliranja
+                    el.kategorijaPush(kateg);
                 }
             });
         }
@@ -200,7 +200,7 @@ export class Evidencija
 
     cheksCategory()
     {
-        var checks = document.getElementsByClassName('cheks');
+        var checks = document.getElementsByClassName("cheks" + this.id);
             var kateg = [];
             for( let i = 0; i < 17; i++)
             {
@@ -213,6 +213,7 @@ export class Evidencija
 
         return kateg;
     }
+
     createVozacTemp(jmbg)
     {
         var temp = null;
@@ -241,8 +242,11 @@ export class Evidencija
         element.crtajRed(red);
         
         //Ovo je izbrisi dugme za svaki red
+        var buttonDiv = document.createElement("div");
+        
         let delButton = document.createElement("button");
         delButton.innerHTML = "Obrisi";
+        delButton.className = "delButton";
         red.appendChild(delButton);
         tabela.appendChild(red);
         //Ovo je izbrisi dugme za svaki red
@@ -279,6 +283,7 @@ export class Evidencija
             }   
         }
         console.log(this.vozaci);
+
     }
     crtajEvidencijaFormu(evDiv, tabela)
     {
@@ -302,7 +307,7 @@ export class Evidencija
         else
         return false;
     }
-    dodajVozaca(vozac) //opraiti
+    dodajVozaca(vozac)
     {
         this.vozaci.push(vozac);
         var evDiv = this.container.querySelector("listaVozaca");
@@ -321,17 +326,12 @@ export class Evidencija
                     "imeVozaca": vozac.ime,
                     "prezimeVozaca": vozac.prezime,
                     "brojDozvole": vozac.brojDozvole,
-                    "grad": "Neki grad",
+                    "grad": vozac.grad,
                     "jmbg": vozac.jmbg
                 }
             )
         });
         this.vozaci.push(vozac);
-        //this.findIdVozaca();
-        //vozac = this.vozaci.pop();
-        //console.log(vozac);
-        //console.log(vozac.id);
-        //vozac.kategorijaPush(vozac.id);
     }
     findIdVozaca()
     {

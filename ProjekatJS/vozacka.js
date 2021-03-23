@@ -30,8 +30,6 @@ export class Vozacka
                 red.appendChild(data);
         });
         
-        let dugme = document.createElement("button");
-        dugme.innerHTML = "Obrisi";
     }
     izmeniRed(vozac)
     {
@@ -40,13 +38,11 @@ export class Vozacka
         informacije[1].innerHTML = vozac.prezime;
         informacije[2].innerHTML = vozac.brojDozvole;
         informacije[4].innerHTML = vozac.grad;
-        //informacije[5].innerHTML = vozac.kategorije.ime;
 
         this.ime = vozac.ime;
         this.prezime = vozac.prezime;
         this.brojDozvole = vozac.brojDozvole;
         this.grad = vozac.grad;
-        //this.kategorije = vozac.kategorije;
 
         fetch("https://localhost:5001/Evidencija/IzmeniVozaca",{
             headers:{
@@ -118,10 +114,6 @@ export class Vozacka
     }
     getId()
     {
-        for( var i = 0; i < 100000; i++)
-        {
-
-        }
         fetch("https://localhost:5001/Evidencija/GetID/" + this.jmbg).then(d => {
             d.json().then(data3 =>{
                 data3.forEach(voz =>{
@@ -134,7 +126,6 @@ export class Vozacka
     setID(id)
     {
         this.id = id;
-        //console.log(this.id);
     }
     izbrisiKategoriju(kateg)
     {
