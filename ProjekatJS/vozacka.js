@@ -21,8 +21,9 @@ export class Vozacka
         
         var data = null;
         this.red = red;
+        red.className = "red";
         var label = ["Ime", "Prezime", "Broj_dozvole", "JMBG", "Grad", "Kategorija"];
-        var info = [this.ime, this.prezime, this.brojDozvole, this.jmbg, this.grad, ""];
+        var info = [this.ime, this.prezime, this.brojDozvole, this.jmbg, this.grad, this.printKategoriju()];
         info.forEach((element, index) => {    
                 data = document.createElement("td");
                 data.innerHTML = element;
@@ -34,32 +35,51 @@ export class Vozacka
     izmeniRed(vozac)
     {
         var informacije = this.red.childNodes;
-        informacije[0].innerHTML = vozac.ime;
-        informacije[1].innerHTML = vozac.prezime;
-        informacije[2].innerHTML = vozac.brojDozvole;
-        informacije[4].innerHTML = vozac.grad;
 
-        this.ime = vozac.ime;
-        this.prezime = vozac.prezime;
-        this.brojDozvole = vozac.brojDozvole;
-        this.grad = vozac.grad;
+        if(vozac.ime !== "")
+        {
+            informacije[0].innerHTML = vozac.ime;
+        }
 
-        fetch("https://localhost:5001/Evidencija/IzmeniVozaca",{
-            headers:{
-                "Content-Type":"application/json"
-            },
-            method:"PUT",
-            body:JSON.stringify(
-                {
-                    "id": this.id,
-                    "imeVozaca": this.ime,
-                    "prezimeVozaca": this.prezime,
-                    "brojDozvole": this.brojDozvole,
-                    "grad": this.grad,
-                    "jmbg": this.jmbg
-                }
-            )
-        });
+        if(vozac.prezime !== "")
+        {
+            informacije[1].innerHTML = vozac.prezime;
+            console.log("prezime: " + vozac.prezime);
+        }
+
+        if(vozac.brojDozvole !== "")
+        {
+            informacije[2].innerHTML = vozac.brojDozvole;
+            console.log("dozvola: " + vozac.brojDozvole);
+        }
+
+        if(vozac.grad !== "")
+        {
+            informacije[4].innerHTML = vozac.grad;
+            console.log("grad: " + vozac.grad);
+        }
+
+            this.ime = informacije[0].innerHTML;
+            this.prezime = informacije[1].innerHTML;
+            this.brojDozvole =informacije[2].innerHTML;
+            this.grad = informacije[4].innerHTML;
+
+            fetch("https://localhost:5001/Evidencija/IzmeniVozaca",{
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                method:"PUT",
+                body:JSON.stringify(
+                    {
+                        "id": this.id,
+                        "imeVozaca": this.ime,
+                        "prezimeVozaca": this.prezime,
+                        "brojDozvole": this.brojDozvole,
+                        "grad": this.grad,
+                        "jmbg": this.jmbg
+                    }
+                )
+            });
     }
     getJMBG()
     {
@@ -78,14 +98,16 @@ export class Vozacka
         var kateg = new Kategorija(id, kategorija); 
         this.kategorije.push(kateg);
     }
-    printKategoriju()//Metoda koja vraca kategorije u obliku string MINT
+    printKategoriju()
     {
+        
         var pom = [];
         this.kategorije.forEach(el =>{
             pom.push(el.ime);
         });
         pom.toString();
         return pom;
+        
     }
     osvezi()
     {
@@ -118,7 +140,6 @@ export class Vozacka
             d.json().then(data3 =>{
                 data3.forEach(voz =>{
                      this.setID(voz.id);
-                     //console.log(this.id);
                 });
             });
         });
@@ -137,6 +158,17 @@ export class Vozacka
                     this.kategorije.splice(index,1);
                 }
             });
+        });
+    }
+    getKategorije()
+    {
+        return this.kategorije;
+    }
+    addCategory(kateg)
+    {
+        this.kategorije = kateg;
+        this.kategorije.forEach(el =>{
+            el.ubaciUbazu(this.id);
         });
     }
 }

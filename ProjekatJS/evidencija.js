@@ -9,8 +9,7 @@ export class Evidencija
         this.imeDrzave = ime;
         this.vozaci = [];
         this.container = null;
-        this.tabela = null; //test
-        this.evDiv = null;
+        this.tabela = null;
     }
 
     crtaj(host)
@@ -39,13 +38,12 @@ export class Evidencija
 
         let tabela = document.createElement("table");
         tabela.className = "listaVozaca";
-        this.tabela = tabela;//test
-        this.evDiv = evDiv;
+        this.tabela = tabela;
         evDiv.appendChild(tabela);
 
 
-        this.crtajFormu(infoDiv, tabela);
-        this.crtajEvidencijaFormu(evDiv, tabela);
+        this.crtajFormu(infoDiv);
+        this.crtajEvidencijaFormu();
     }
 
     crtajFormu(host)
@@ -58,6 +56,7 @@ export class Evidencija
 
             elLabel = document.createElement("label");
             elLabel.innerHTML = element;
+            elLabel.className = "Labele";
             host.appendChild(elLabel);
 
             if(index < 5)
@@ -80,6 +79,9 @@ export class Evidencija
         let everyButton  = null; 
         let checkDiv = null; 
 
+        let checkboxDiv = document.createElement("div");
+        checkboxDiv.className = "checkboxDiv";
+
         labele.forEach(element =>
         {
                 checkDiv = document.createElement("div");
@@ -96,23 +98,29 @@ export class Evidencija
                 checkDiv.appendChild(everyButton);
                 checkDiv.appendChild(inputEl);
 
-                host.appendChild(checkDiv);
+                checkboxDiv.appendChild(checkDiv);
         });
+
+        host.appendChild(checkboxDiv);
 
         const buttonAdd = document.createElement("button");
         buttonAdd.innerHTML = "Dodaj";
+        buttonAdd.className = "Dugme";
         host.appendChild(buttonAdd);
 
         const buttonEdit = document.createElement("button");
         buttonEdit.innerHTML = "Izmeni";
+        buttonEdit.className = "Dugme";
         host.appendChild(buttonEdit);
 
         const buttonAddCategory = document.createElement("button");
         buttonAddCategory.innerHTML = "Dodaj kategorije";
+        buttonAddCategory.className = "Dugme";
         host.appendChild(buttonAddCategory);
 
         const buttonDelCategory = document.createElement("button");
         buttonDelCategory.innerHTML = "Izbrisi kategorije";
+        buttonDelCategory.className = "Dugme";
         host.appendChild(buttonDelCategory);
 
         buttonEdit.onclick =(ev) =>
@@ -152,17 +160,21 @@ export class Evidencija
                         flag = true;
                     }
                 });
-            if(this.validateJMBG(jmbg2) && flag === false)
+
+            if(flag === true)
+            {
+                alert("Vec postoji vozac sa postojecim JMBG-om");
+            }
+            else if(this.validateJMBG(jmbg2) === false)
+            {
+                alert("Nije validan JMBG");
+            }
+            else if(this.validateJMBG(jmbg2) && flag === false)
             {
                 var vozac = this.createVozacTemp(jmbg2);
                 this.vozaci.push(vozac);
                 this.cratjRedEvidencije(vozac);
                 this.dodajUbazu();
-                console.log(this.vozaci);
-            }
-            else
-            {
-                alert("Nije validan JMBG");
             }
         }
 
@@ -174,6 +186,7 @@ export class Evidencija
                 if(jmbg1 === el.jmbg)
                 {
                     el.kategorijaPush(kateg);
+                    this.crtajVozace();
                 }
             });
         }
@@ -192,12 +205,14 @@ export class Evidencija
                     if(jmbg1 === el.jmbg)
                     {
                         el.izbrisiKategoriju(kateg);
+                        this.crtajVozace();
                     }
                 });
             } 
         }
     }
 
+    
     cheksCategory()
     {
         var checks = document.getElementsByClassName("cheks" + this.id);
@@ -209,55 +224,46 @@ export class Evidencija
                     kateg.push(new Kategorija(null, checks[i].value));
                 }
             }
-        console.log(kateg);
 
         return kateg;
     }
 
     createVozacTemp(jmbg)
     {
-        var temp = null;
         var ime = this.container.querySelector(".Ime").value;
 
-            var prezime = this.container.querySelector(".Prezime").value;
+        var prezime = this.container.querySelector(".Prezime").value;
 
-            var brDozvole = this.container.querySelector(".Broj_dozvole").value;
+        var brDozvole = this.container.querySelector(".Broj_dozvole").value;
 
-            var grad = this.container.querySelector(".Grad").value;
+        var grad = this.container.querySelector(".Grad").value;
 
-            //Ovde ide obrada checkoxa
-            var checks = document.getElementsByClassName('cheks');
-
-            var kateg = this.cheksCategory;
-            var vozac = new Vozacka(null, ime, prezime, brDozvole, jmbg, grad);
-            vozac.kategorije = kateg;
-            return vozac;
+        var kateg = this.cheksCategory();
+        var vozac = new Vozacka(null, ime, prezime, brDozvole, jmbg, grad);
+        vozac.kategorije = kateg;
+        return vozac;
     }
-    cratjRedEvidencije(vozac)
+
+    cratjRedEvidencije()
     {
         this.findIdVozaca();
         var tabela = this.tabela;
         var element = this.vozaci.pop();
         let red = document.createElement("tr");
+        red.className = "red";
         element.crtajRed(red);
-        
-        //Ovo je izbrisi dugme za svaki red
-        var buttonDiv = document.createElement("div");
         
         let delButton = document.createElement("button");
         delButton.innerHTML = "Obrisi";
-        delButton.className = "delButton";
+        delButton.className = "Dugme";
         red.appendChild(delButton);
         tabela.appendChild(red);
-        //Ovo je izbrisi dugme za svaki red
 
         this.vozaci.push(element);
-        console.log(this.vozaci);
 
-        //delete dugme
         delButton.onclick =(ev) =>
         {
-            var flag = false;
+            var flag = true;
             var labele = ["AM", "A1", "A2", "A", "B1", "B", "BE", "C1" ,"C1E" , "C", "CE", "D1", "D1E", "D", "DE", "F", "M"];
             
             {
@@ -282,13 +288,12 @@ export class Evidencija
                 });
             }   
         }
-        console.log(this.vozaci);
-
     }
-    crtajEvidencijaFormu(evDiv, tabela)
+
+    crtajEvidencijaFormu()
     {
         let red = document.createElement("tr");
-        tabela.appendChild(red);
+        this.tabela.appendChild(red);
         
         let labele = ["Ime: ", "Prezime: ", "Broj dozvole: ", "JMBG: ", "Grad: ", "Kategorija: "];
         let heder = null;
@@ -300,6 +305,7 @@ export class Evidencija
                 red.appendChild(heder);
             })
     }
+
     validateJMBG(jmbg)
     {
         if(jmbg.length === 13)
@@ -307,18 +313,24 @@ export class Evidencija
         else
         return false;
     }
+
     dodajVozaca(vozac)
     {
         this.vozaci.push(vozac);
         var evDiv = this.container.querySelector("listaVozaca");
         this.cratjRedEvidencije();
     }
+
     dodajUbazu()
     {
         var vozac = this.vozaci.pop();
+
+            var kateg = this.cheksCategory();
+
         fetch("https://localhost:5001/Evidencija/UpisiVozaca/" + this.id,{
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Access-Control-Allow-Origin": "*"
             },
             method:"POST",
             body:JSON.stringify(
@@ -330,13 +342,31 @@ export class Evidencija
                     "jmbg": vozac.jmbg
                 }
             )
+        }).then(p=>{
+            if(p.ok)
+            {
+                p.json().then(data =>{
+                    vozac.id = data.id;
+                    var kateg = this.cheksCategory();
+                    vozac.addCategory(kateg);
+                    this.vozaci.push(vozac);
+                    this.crtajVozace();
+                })
+            }
         });
-        this.vozaci.push(vozac);
     }
+
     findIdVozaca()
     {
         var vozac = this.vozaci.pop();
         vozac.getId();
         this.vozaci.push(vozac);
+    }
+    
+    crtajVozace()
+    {
+        this.vozaci.forEach(el=>{
+            el.osvezi();
+        })
     }
 }

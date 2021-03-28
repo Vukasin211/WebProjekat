@@ -27,6 +27,7 @@ export class Kategorija
         });
     }
 
+    
     brisiIzBaze()
     {
         fetch("https://localhost:5001/Evidencija/IzbrisiKategoriju/" + this.id,{method:"DELETE"});

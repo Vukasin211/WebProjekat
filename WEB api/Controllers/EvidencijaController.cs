@@ -22,7 +22,7 @@ namespace WEB_api.Controllers
 
         [Route("PreuzmiEvidencije")]
         [HttpGet]
-        public async Task<List<Evidencija>> PreuzmiVrtove()
+        public async Task<List<Evidencija>> PreuzmiEvidencije()
         {
             return await Context.Evidencije.Include(p => p.ListaVozackih).ThenInclude(s => s.Kategorije).ToListAsync();
         }
@@ -66,12 +66,13 @@ namespace WEB_api.Controllers
         [Route("UpisiVozaca/{idEvidencije}")]
         [HttpPost]
 
-        public async Task UpisiVozaca(int idEvidencije, [FromBody] Vozacka vozac)
+        public async Task<IActionResult> UpisiVozaca(int idEvidencije, [FromBody] Vozacka vozac)
         {
             vozac.evidencija = await Context.Evidencije.FindAsync(idEvidencije);
             Context.Vozacke.Add(vozac);
             vozac.evidencija.ListaVozackih.Add(vozac);
             await Context.SaveChangesAsync();
+            return Ok(vozac);
         }
 
         [Route("UpisiKategoriju/{idVozaca}")]
@@ -121,8 +122,13 @@ namespace WEB_api.Controllers
         [HttpDelete]
         public async Task IzbrisiVozaca(int idVozaca)
         {
+            var nizKategorija = Context.Kategorije.Where(k=>k.vozac.ID == idVozaca);
+            await nizKategorija.ForEachAsync(k =>
+            {
+                Context.Remove(k);
+            });
             var vozac = await Context.Vozacke.FindAsync(idVozaca);
-            Context.Remove(vozac);
+            Context.Vozacke.Remove(vozac);
             await Context.SaveChangesAsync();
         }
         

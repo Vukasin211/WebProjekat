@@ -1,47 +1,134 @@
+html
+{
+    background-color: rgb(82, 82, 82);
+}
+.imeDrzave
+{
+    font-size: 30px;
+    font-weight: bold;
+    color: black
+}
 .Kontejner
 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    border-radius: 5px;
+    flex-grow: 1;
 }
-
+.checkboxDiv
+{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    max-height: 300px;
+}
 .infoDiv
 {
     display: flex;
     flex-direction: column;
     flex-basis: 100px;
     flex-grow: 1;
-    border: 1px solid black;
+    border: 2px dotted rgb(82, 82, 82);
+    background-color: lightgray;
     padding: 5px;
-    margin: 2px;
+    margin: 10px;
+    border-radius: 30px;
+    padding:16px 18px 14px;
+    max-width: 300px;
+
+}
+.evDiv
+{
+    background-color: lightgray;
+    border: 2px dotted rgb(82, 82, 82);
+    display: flex;
+    flex-direction: row;
+    flex-grow: 7;
+    margin: 10px;
+    border-radius: 30px;
+}
+.Ime, .Prezime, .Broj_dozvole, .JMBG, .Grad, .Kategorija
+{
+    height: 20px;
+    font-size: 20px;
+} 
+.Labele
+{
+    font-size: 20px;
+}
+ .Dugme {
+    position:relative;
+    width: auto;
+    color:#ecf0f1;
+    text-decoration:none;
+    border-radius:5px;
+    border:solid 1px #f39c12;
+    background:#e67e22;
+    text-align:center;
+    padding:16px 18px 14px;
+
+    height: 50px;
+    color: black;
+    margin: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    transition: all 0.1s;
+  
+    -webkit-box-shadow: 0px 6px 0px #d35400;
+    -moz-box-shadow: 0px 6px 0px #d35400;
+    box-shadow: 0px 6px 0px #d35400;
+  }
+.Dugme:active{
+    -webkit-box-shadow: 0px 2px 0px #d35400;
+    -moz-box-shadow: 0px 2px 0px #d35400;
+    box-shadow: 0px 2px 0px #d35400;
+    position:relative;
+    top:4px;
 }
 
 .checkDiv
 {
     display: flex;
     flex-direction: row;
+    font-size: 20px;
 }
-.evDiv
-{
-    border: 1px solid black;
-    display: flex;
-    flex-direction: row;
-    flex-grow: 6;
-    margin: 2px;
-}
-
 th, td
 {
+    background-color: white;
     border: 1px solid black;
+    text-align: center;
+}
+
+th
+{
+    background-color: white;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 table
 {
-    border-collapse: collapse;
+    border-collapse: separate;
+    margin: 5px;
     width: 100%;
+    padding: 5px;
 }
 
-.imeDrzave
-{
-    font-size: 24px;
-}
+   th:first-of-type {
+    border-top-left-radius: 30px;
+  }
+  th:last-of-type {
+    border-top-right-radius: 30px;
+  }
+  tr:last-of-type td:first-of-type {
+    border-bottom-left-radius: 30px;
+  }
+  tr:last-of-type td:last-of-type {
+    border-bottom-right-radius: 0px;
+  }
